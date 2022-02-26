@@ -1,70 +1,74 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import SongsList from '../SongsList/SongsList';
+import React, { useState, useCallback, useEffect } from "react";
+import CloverIcon from "../CloverIcon/CloverIcon";
+import SongsList from "../SongsList/SongsList";
 
 const PlayList = () => {
-    const [tracks, setTracks] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-  
-    const fetchSongsHandler = useCallback(async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const response = await fetch('https://cors-anywhere.herokuapp.com/https://api.deezer.com/chart/tracks/tracks'); 
-      
-        if (!response.ok) {
-          throw new Error('Something went wrong!');
-        }
-  
-        const data = await response.json();
-        
-        const loadedSongs = [];
-  
-        for (const key in data) {
-          loadedSongs.push({
-            key: key,
-            id: data[key].id,
-            title: data[key].title,
-            duration: data[key].duration,
-            artist: data[key].artist, 
-          });
-        }
+  const [songs, setSongs] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-        setTracks(loadedSongs);
-        console.log(loadedSongs)
-      } catch (error) {
-        setError(error.message);
-      }
-      setIsLoading(false);
-    }, []);
-    useEffect(() => {
-        fetchSongsHandler();
-      }, [fetchSongsHandler]);
+  const fetchSongsHandler = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        "https://cors-anywhere.herokuapp.com/https://api.deezer.com/chart/tracks/tracks/"
+      );
 
-      let content = <p>Found no songs.</p>;
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
 
-      if (tracks.length > 0) {
-        content = <SongsList tracks={tracks} />;
-      }
-    
-      if (error) {
-        content = <p>{error}</p>;
-      }
-    
-      if (isLoading) {
-        content = <p>Loading...</p>;
-      }
+      const data = await response.json();
+
+      const loadedSongs = data.data.map((song) => ({
+        id: song.id,
+        title: song.title,
+        duration: song.duration,
+        artist: song.artist.name,
+        image: song.artist.picture_big,
+      }));
+
+      let sortedData = loadedSongs
+        .slice()
+        .sort((a, b) => a.duration - b.duration);
+      setSongs(sortedData);
+      console.log(data);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  }, []);
+  useEffect(() => {
+    fetchSongsHandler();
+  }, [fetchSongsHandler]);
+
+  let content = <p>Found no songs.</p>;
+  const sortHandler = (songs) => songs.reverse();
+
+  if (songs.length > 0) {
+    content = (
+      <SongsList
+        songs={songs}
+        fetchSongsHandler={fetchSongsHandler}
+        sortHandler={sortHandler}
+      />
+    );
+  }
+
+  if (error) {
+    content = <p>{error}</p>;
+  }
+
+  if (isLoading) {
+    content = <CloverIcon />;
+  }
 
   return (
     <React.Fragment>
-    
-    <section>
-      <button onClick={fetchSongsHandler}>Fetch Songs</button>
-    </section>
-    <ul>{content}</ul>
-  </React.Fragment>
+      <div>{content}</div>
+    </React.Fragment>
+  );
+};
 
-  )
-}
-
-export default PlayList
+export default PlayList;

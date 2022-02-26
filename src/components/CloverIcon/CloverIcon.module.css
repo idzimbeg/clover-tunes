@@ -1,0 +1,89 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.clover {
+  position: relative;
+    animation: App-logo-spin infinite 1.5s linear;
+
+}
+
+.shamrock {
+  position: relative;
+  transform: rotate(-20deg);
+}
+
+.leafOne,
+.leafTwo,
+.leafThree {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: #55a630;
+  border-radius: 80% 15% 55% 50% / 55% 15% 80% 50%;
+  box-shadow: inset 2px 2px #2b9348;
+
+}
+
+.leafOne {
+  top: 5px;
+  left: 8px;
+}
+
+.leafOne:before,
+.leafTwo:before,
+.leafThree:before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: #55a630;
+  border-radius: 80% 15% 55% 50% / 55% 15% 80% 50%;
+  top: -18px;
+  transform: rotate(50deg);
+  left: -7px;
+}
+
+.leafTwo {
+  transform: rotate(110deg);
+  top: -40px;
+  left: 20px;
+}
+
+.leafThree {
+  top: -10px;
+  left: 55px;
+  transform: rotate(-130deg);
+}
+
+@keyframes rotate-scale-up {
+    0% {
+              transform: scale(2) 
+              rotateZ(0);
+    }
+    25%{
+      transform: scale(1.5) rotateZ(90deg);
+    }
+    50% {
+              transform: scale(1) 
+              rotateZ(180deg);
+    }
+    75% {
+      transform: scale(1.5) rotateZ(270deg);
+    }
+    100% {
+              transform: scale(2) 
+              rotateZ(360deg);
+    }
+  }
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }

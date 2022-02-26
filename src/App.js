@@ -1,13 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 
 import PlayList from "../src/components/PlayList/PlayList";
 
 function App() {
-  return (
-
-      <PlayList />
-
-  );
+return <PlayList />;
 }
 
 export default App;
