@@ -28,11 +28,7 @@ const PlayList = () => {
         artist: song.artist.name,
         image: song.artist.picture_big,
       }));
-
-      let sortedData = loadedSongs
-        .slice()
-        .sort((a, b) => a.duration - b.duration);
-      setSongs(sortedData);
+      setSongs(loadedSongs);
       console.log(data);
     } catch (error) {
       setError(error.message);
@@ -44,14 +40,13 @@ const PlayList = () => {
   }, [fetchSongsHandler]);
 
   let content = <p>Found no songs.</p>;
-  const sortHandler = (songs) => songs.reverse();
 
   if (songs.length > 0) {
     content = (
       <SongsList
         songs={songs}
         fetchSongsHandler={fetchSongsHandler}
-        sortHandler={sortHandler}
+        // sortHandler={sortHandler}
       />
     );
   }

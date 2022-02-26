@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import Song from "../Song/Song";
 import ModalCard from "../Modal/ModalCard";
+import useSort from "../hooks/useSort";
 
 import {
   AppBar,
@@ -23,6 +24,13 @@ const theme = createTheme();
 const SongsList = (props) => {
   const clickedElement = useRef(null);
   const [open, setOpen] = useState(false);
+  const { items, requestSort, sortConfig } = useSort(props.songs);
+  // const getClassNamesFor = (duration) => {
+  //   if (!sortConfig) {
+  //     return;
+  //   }
+  //   return sortConfig.key === duration ? sortConfig.direction : undefined;
+  // };
 
   const handleOpenModal = (id) => () => {
     setOpen(true);
@@ -30,6 +38,9 @@ const SongsList = (props) => {
   const handleCloseModal = () => {
     setOpen(false);
   };
+  const sortHandler = () => {
+    requestSort('duration')
+  }
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -83,7 +94,8 @@ const SongsList = (props) => {
               <Button
                 variant="contained"
                 sx={{ bgcolor: "#388e3c" }}
-                onClick={props.sortHandler}
+                type="button"
+              onClick={sortHandler}
               >
                 Sort by duration
               </Button>
@@ -93,8 +105,8 @@ const SongsList = (props) => {
         <ol>
           <Container sx={{ py: 8 }} maxWidth="md">
             <Grid container spacing={4}>
-              {props.songs.map((song, id) => (
-                <Grid item key={song.id} xs={12} sm={6} md={4}>
+              {items.map((item, id) => (
+                <Grid item key={item.id} xs={12} sm={6} md={4}>
                   <Card
                     sx={{
                       height: "100%",
@@ -107,11 +119,11 @@ const SongsList = (props) => {
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Song
                         ref={clickedElement}
-                        key={song.id}
-                        title={song.title}
-                        duration={song.duration}
-                        artist={song.artist}
-                        image={song.image}
+                        key={item.id}
+                        title={item.title}
+                        duration={item.duration}
+                        artist={item.artist}
+                        image={item.image}
                       />
                     </CardContent>
                   </Card>
