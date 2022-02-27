@@ -13,9 +13,7 @@ const style = {
   p: 4,
 };
 
-
 const ModalCard = (props) => {
-
   return (
     <Modal open={props.open} key={props.id}>
       <Box sx={style}>

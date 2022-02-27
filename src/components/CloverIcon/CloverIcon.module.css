@@ -7,8 +7,7 @@
 
 .clover {
   position: relative;
-    animation: App-logo-spin infinite 1.5s linear;
-
+  animation: App-logo-spin infinite 1.5s linear;
 }
 
 .shamrock {
@@ -25,7 +24,6 @@
   background-color: #55a630;
   border-radius: 80% 15% 55% 50% / 55% 15% 80% 50%;
   box-shadow: inset 2px 2px #2b9348;
-
 }
 
 .leafOne {
@@ -60,30 +58,27 @@
 }
 
 @keyframes rotate-scale-up {
-    0% {
-              transform: scale(2) 
-              rotateZ(0);
-    }
-    25%{
-      transform: scale(1.5) rotateZ(90deg);
-    }
-    50% {
-              transform: scale(1) 
-              rotateZ(180deg);
-    }
-    75% {
-      transform: scale(1.5) rotateZ(270deg);
-    }
-    100% {
-              transform: scale(2) 
-              rotateZ(360deg);
-    }
+  0% {
+    transform: scale(2) rotateZ(0);
   }
-  @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  25% {
+    transform: scale(1.5) rotateZ(90deg);
   }
+  50% {
+    transform: scale(1) rotateZ(180deg);
+  }
+  75% {
+    transform: scale(1.5) rotateZ(270deg);
+  }
+  100% {
+    transform: scale(2) rotateZ(360deg);
+  }
+}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

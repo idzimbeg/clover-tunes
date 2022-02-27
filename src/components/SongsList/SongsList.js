@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Song from "../Song/Song";
 import ModalCard from "../Modal/ModalCard";
-import useSort from "../hooks/useSort";
+import useSort from "../../hooks/useSort";
 
 import {
   AppBar,
@@ -22,29 +22,30 @@ import SpaOutlinedIcon from "@mui/icons-material/SpaOutlined";
 const theme = createTheme();
 
 const SongsList = (props) => {
-  const clickedElement = useRef(null);
-  const [open, setOpen] = useState(false);
+  const [selectedSong, setSelectedSong] = useState(false);
   const { items, requestSort, sortConfig } = useSort(props.songs);
-  // const getClassNamesFor = (duration) => {
-  //   if (!sortConfig) {
-  //     return;
-  //   }
-  //   return sortConfig.key === duration ? sortConfig.direction : undefined;
-  // };
+  const getClassNamesFor = (duration) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === duration ? sortConfig.direction : false;
+  };
 
   const handleOpenModal = (id) => () => {
-    setOpen(true);
+    const songSelect = props.songs.find((song) => song.id === id);
+    setSelectedSong(songSelect);
+    console.log(songSelect);
   };
   const handleCloseModal = () => {
-    setOpen(false);
+    setSelectedSong(false);
   };
   const sortHandler = () => {
-    requestSort('duration')
-  }
+    requestSort("duration");
+  };
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position="relative">
+      <AppBar position="fixed">
         <Toolbar sx={{ bgcolor: "#388e3c" }}>
           <Typography variant="h6" color="inherit" noWrap>
             ShamRock!
@@ -95,7 +96,8 @@ const SongsList = (props) => {
                 variant="contained"
                 sx={{ bgcolor: "#388e3c" }}
                 type="button"
-              onClick={sortHandler}
+                onClick={sortHandler}
+                className={getClassNamesFor("duration")}
               >
                 Sort by duration
               </Button>
@@ -114,11 +116,10 @@ const SongsList = (props) => {
                       flexDirection: "column",
                       padding: "1rem",
                     }}
-                    onClick={handleOpenModal(id)}
+                    onClick={handleOpenModal(item.id)}
                   >
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Song
-                        ref={clickedElement}
                         key={item.id}
                         title={item.title}
                         duration={item.duration}
@@ -131,12 +132,13 @@ const SongsList = (props) => {
               ))}
             </Grid>
             <ModalCard
-              open={open}
+              open={!!selectedSong}
               handleCloseModal={handleCloseModal}
-              title={props.songs.title}
-              duration={props.songs.duration}
-              artist={props.songs.artist}
-              image={props.songs.image}
+              key={selectedSong.id}
+              title={selectedSong.title}
+              duration={selectedSong.duration}
+              artist={selectedSong.artist}
+              image={selectedSong.image}
             />
           </Container>
         </ol>
